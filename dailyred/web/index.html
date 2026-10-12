@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Daily Red</title>
+  <meta name="description" content="Un combat Pokémon par jour : six Pokémon aléatoires de niveau 100 contre RED au sommet de la montagne.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="vendor/pixelify-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <main class="app" data-state="title">
+    <header class="masthead">
+      <h1 class="title">Daily Red</h1>
+    </header>
+
+    <section class="console" id="console" aria-label="Jeu">
+      <div class="bezel">
+        <div class="screen" id="screen">
+          <div class="card card-title">
+            <div class="snow" aria-hidden="true"></div>
+            <img class="red-sprite" src="game/red.png" width="64" height="64" alt="RED">
+            <dl class="stats">
+              <div><dt>Victoires</dt><dd id="stat-wins">0</dd></div>
+              <div><dt>Défaites</dt><dd id="stat-losses">0</dd></div>
+              <div><dt>Série de victoires</dt><dd id="stat-win-streak">0</dd></div>
+              <div><dt>Jours d'affilée</dt><dd id="stat-day-streak">0</dd></div>
+            </dl>
+            <button class="button button-play" id="play" type="button">Jouer</button>
+            <div class="played" id="played" hidden>
+              <p class="played-result" id="played-result"></p>
+              <p class="played-next" id="played-next"></p>
+            </div>
+            <p class="card-note" id="practice-note" hidden>Partie d'entraînement : les résultats ne sont pas enregistrés.</p>
+          </div>
+          <div class="card card-loading" role="status" aria-live="polite">
+            <p class="card-heading" id="loading-text">Téléchargement du jeu</p>
+            <div class="meter"><div class="meter-fill" id="meter"></div></div>
+            <p class="card-note" id="loading-detail"></p>
+          </div>
+          <div class="card card-error" role="alert">
+            <p class="card-heading">Le jeu n'a pas démarré</p>
+            <p class="card-note" id="error-text"></p>
+            <button class="button button-play" id="retry" type="button">Réessayer</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button class="button button-quiet" id="sound" type="button" aria-pressed="false" disabled>Couper le son</button>
+        <button class="button button-quiet" id="fullscreen" type="button" disabled>Plein écran</button>
+      </div>
+
+      <div class="pad" aria-label="Commandes tactiles">
+        <div class="dpad" aria-label="Croix directionnelle" role="group">
+          <span class="dpad-arm dpad-up"></span>
+          <span class="dpad-arm dpad-left"></span>
+          <span class="dpad-arm dpad-center"></span>
+          <span class="dpad-arm dpad-right"></span>
+          <span class="dpad-arm dpad-down"></span>
+        </div>
+        <div class="face">
+          <button class="pad-button pad-b" type="button" data-button="b">B</button>
+          <button class="pad-button pad-a" type="button" data-button="a">A</button>
+        </div>
+        <div class="meta">
+          <button class="pad-pill" type="button" data-button="select">Select</button>
+          <button class="pad-pill" type="button" data-button="start">Start</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide">
+      <h2 class="guide-heading">Clavier</h2>
+      <dl class="keys">
+        <div><dt><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd></dt><dd>Se déplacer, déplacer le curseur</dd></div>
+        <div><dt><kbd>X</kbd></dt><dd>Bouton A : parler, valider</dd></div>
+        <div><dt><kbd>Z</kbd></dt><dd>Bouton B : retour, annuler</dd></div>
+        <div><dt><kbd>Enter</kbd></dt><dd>Start : ouvrir le menu</dd></div>
+        <div><dt><kbd>Right Shift</kbd></dt><dd>Select</dd></div>
+      </dl>
+      <p class="guide-note">Sur téléphone ou tablette, utilisez les boutons sous l'écran.</p>
+    </section>
+
+    <footer class="footer">
+      <p>Daily Red est un projet de fan gratuit et non officiel. Il n'est ni affilié à Nintendo, Creatures Inc., GAME FREAK inc. ou The Pokémon Company, ni approuvé par ces sociétés. Pokémon et tout le contenu du jeu sont © Nintendo, Creatures Inc. et GAME FREAK inc.</p>
+      <p><a href="licenses.txt">Licences</a> · <a href="https://github.com/amoi-builds/dailyred">Code source</a></p>
+    </footer>
+  </main>
+</body>
+</html>

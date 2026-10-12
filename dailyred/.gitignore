@@ -1,0 +1,17 @@
+# Everything below is recreated by the scripts in scripts/ (see README).
+
+# scripts/setup-macos.sh
+/.toolchain/
+# scripts/get-pokefirered.sh (pret/pokefirered + patches/)
+/pokefirered/
+# scripts/fetch-vendor.sh
+/web/vendor/
+# scripts/build-rom.sh. Build output; don't commit it.
+/web/game/
+
+# Wrangler's local cache (Cloudflare deploys)
+/.wrangler/
+
+/tests/node_modules/
+/tests/output/
+.DS_Store
