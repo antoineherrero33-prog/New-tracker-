@@ -1,0 +1,209 @@
+<title>Liste de courses</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: une colonne étroite façon ticket de caisse, rayons en sections, onglets Liste / Oublis */
+:root{
+  --bg:#f1f5ef; --surface:#ffffff; --fg:#15261b; --muted:#5d6f63; --line:#d9e2d6;
+  --accent:#1d7a4a; --accent-fg:#ffffff; --warm:#d9560b; --warm-bg:#fdeadd; --done:#9aa99f;
+  --font-display:"Bricolage Grotesque","Trebuchet MS",sans-serif;
+  --font-body:"DM Sans",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#101a14; --surface:#18251d; --fg:#e7f0e8; --muted:#98ab9e; --line:#27382d;
+  --accent:#4fc283; --accent-fg:#08170e; --warm:#ff9a5c; --warm-bg:#3a2415; --done:#62766a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101a14; --surface:#18251d; --fg:#e7f0e8; --muted:#98ab9e; --line:#27382d;
+  --accent:#4fc283; --accent-fg:#08170e; --warm:#ff9a5c; --warm-bg:#3a2415; --done:#62766a; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.4;
+  padding-block:20px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1{font-family:var(--font-display);font-size:2rem;line-height:1.05;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:.9rem}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line)}
+.tab{background:none;border:0;padding:10px 14px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--fg);border-color:var(--accent)}
+.badge{display:inline-block;min-width:1.4em;padding:0 6px;border-radius:99px;background:var(--warm-bg);color:var(--warm);font-size:.78rem;text-align:center;margin-left:6px}
+.prog{display:flex;flex-direction:column;gap:6px}
+.prog-top{display:flex;justify-content:space-between;font-size:.9rem;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+.add{display:flex;gap:8px;flex-wrap:wrap}
+.add input{flex:1 1 180px;min-width:0;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.add select{flex:1 1 120px;min-width:0;padding:11px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.btn{padding:11px 16px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);font-weight:600}
+.btn.ghost{background:none;color:var(--fg);border-color:var(--line);font-weight:500;padding:7px 12px;font-size:.88rem}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tools label{display:flex;align-items:center;gap:6px;font-size:.9rem;margin-right:auto}
+.rayon{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rayon h2{margin:0;padding:10px 14px;font-family:var(--font-display);font-size:1rem;display:flex;justify-content:space-between;border-bottom:1px solid var(--line)}
+.rayon h2 span{font-family:var(--font-body);font-weight:500;color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;align-items:center;gap:12px;padding:0 6px 0 14px;border-top:1px solid var(--line)}
+li:first-child{border-top:0}
+li label{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:12px 0;cursor:pointer;overflow-wrap:anywhere}
+li input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);flex:none}
+li.done label span{text-decoration:line-through;color:var(--done)}
+.x{background:none;border:0;color:var(--muted);font-size:1.3rem;width:40px;height:40px;border-radius:8px}
+.x:hover{color:var(--warm)}
+.empty{color:var(--muted);text-align:center;padding:24px 0}
+.group{display:flex;flex-direction:column;gap:10px}
+.group h2{font-family:var(--font-display);font-size:1.05rem;margin:8px 0 0}
+.sug{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 10px 10px 14px}
+.sug div{flex:1;min-width:0}
+.sug b{display:block;font-weight:600}
+.sug small{color:var(--muted)}
+.sug .btn{padding:8px 14px;flex:none}
+.sug.in{opacity:.55}
+.sug .btn[disabled]{background:none;color:var(--muted);border-color:var(--line)}
+.intro{background:var(--warm-bg);color:var(--fg);border-radius:10px;padding:12px 14px;font-size:.92rem}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Liste de courses</h1>
+    <p class="sub" id="date"></p>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-liste" aria-selected="true" data-tab="liste">Ma liste</button>
+    <button class="tab" role="tab" id="t-oublis" aria-selected="false" data-tab="oublis">Oublis possibles<span class="badge" id="nb-oublis">0</span></button>
+  </nav>
+
+  <section id="p-liste" class="group">
+    <div class="prog">
+      <div class="prog-top"><span id="prog-txt"></span><span id="prog-pct"></span></div>
+      <div class="bar"><i id="bar"></i></div>
+    </div>
+    <form class="add" id="form">
+      <input id="new" type="text" placeholder="Ajouter un article" autocomplete="off" aria-label="Nouvel article">
+      <select id="cat" aria-label="Rayon"></select>
+      <button class="btn" type="submit">Ajouter</button>
+    </form>
+    <div class="tools">
+      <label><input type="checkbox" id="hide"> Masquer les articles cochés</label>
+      <button class="btn ghost" id="uncheck" type="button">Tout décocher</button>
+      <button class="btn ghost" id="clean" type="button">Retirer les cochés</button>
+    </div>
+    <div id="list" class="group"></div>
+  </section>
+
+  <section id="p-oublis" class="group" hidden>
+    <div class="intro">Ces idées viennent de ce qu'il y a déjà dans la liste (soupes, wok teriyaki, plats végé) et des basiques qui manquent souvent. Un appui sur « Ajouter » les place dans le bon rayon.</div>
+    <div id="sugs" class="group"></div>
+  </section>
+</div>
+
+<script>
+var CATS=["Fruits et légumes","Frais","Boulangerie","Épicerie","Boissons","Maison et hygiène"];
+var SEED=[
+["Graines de sésame","Épicerie"],["Sauce teriyaki","Épicerie"],
+["Petits pois carottes (conserve)","Épicerie"],["Petits pois (conserve)","Épicerie"],["Haricots verts (conserve)","Épicerie"],
+["Asperges (conserve)","Épicerie"],["Maïs (conserve)","Épicerie"],["Thon (conserve)","Épicerie"],["Purée de pois","Épicerie"],
+["Coquillettes","Épicerie"],["Gâteaux du matin","Épicerie"],["Pack d'eau","Boissons"],
+["Crevettes cuites","Frais"],["Faux chorizo","Frais"],["Crème fraîche pasteurisée","Frais"],["Beurre demi-sel pasteurisé","Frais"],
+["Mozzarella en tranches","Frais"],["Mozzarella râpée","Frais"],["Lardons végé","Frais"],["Kiri","Frais"],["Faux poulet végé","Frais"],["Croquetas végé","Frais"],
+["Petits pains façon bretzel","Boulangerie"],
+["Oignons jaunes","Fruits et légumes"],["Salade et mâche","Fruits et légumes"],["Avocats","Fruits et légumes"],["Ciboulette","Fruits et légumes"],
+["Citron jaune","Fruits et légumes"],["Kiwis","Fruits et légumes"],["Raisins sans pépins","Fruits et légumes"],["Tomates cerises","Fruits et légumes"],
+["Patates douces","Fruits et légumes"],["Butternuts","Fruits et légumes"],["Légumes pour les soupes","Fruits et légumes"],
+["Shampoings Dessange","Maison et hygiène"],["Mouchoirs (boîtes et paquets)","Maison et hygiène"],["PQ Just 1","Maison et hygiène"]
+];
+var SUGS=[
+["Poireaux","Fruits et légumes","Base de soupe"],["Carottes","Fruits et légumes","Soupes et accompagnement"],["Pommes de terre","Fruits et légumes","Soupes et purées"],
+["Courgettes","Fruits et légumes","Soupes"],["Ail","Fruits et légumes","Wok, teriyaki, soupes"],["Gingembre","Fruits et légumes","Sauce teriyaki, crevettes"],
+["Bananes","Fruits et légumes","Fruits de la semaine"],["Pommes","Fruits et légumes","Fruits de la semaine"],
+["Bouillon de légumes (cubes)","Épicerie","Pour les soupes"],["Riz","Épicerie","Avec crevettes et teriyaki"],["Nouilles","Épicerie","Wok teriyaki"],
+["Sauce soja","Épicerie","Complète le teriyaki"],["Huile d'olive","Épicerie","Basique de cuisine"],["Huile de sésame","Épicerie","Avec les graines de sésame"],
+["Sel et poivre","Épicerie","Basique de cuisine"],["Café ou thé","Épicerie","Petit-déjeuner"],["Confiture ou pâte à tartiner","Épicerie","Avec les gâteaux du matin"],
+["Céréales ou flocons d'avoine","Épicerie","Petit-déjeuner"],["Farine et sucre","Épicerie","Basiques de pâtisserie"],
+["Œufs","Frais","Basique, pour les croquetas et omelettes"],["Lait","Frais","Basique"],["Yaourts","Frais","Dessert et petit-déjeuner"],
+["Fromage (emmental, comté)","Frais","Pour gratiner les coquillettes"],["Tofu","Frais","Autre option végé"],
+["Pain de mie","Boulangerie","Avec le Kiri et la mozzarella"],["Baguette","Boulangerie","Basique"],
+["Jus de fruits","Boissons","Avec le pack d'eau"],["Eau gazeuse","Boissons","Avec le pack d'eau"],
+["Après-shampoing","Maison et hygiène","Avec les shampoings"],["Dentifrice","Maison et hygiène","Souvent oublié"],["Savon ou gel douche","Maison et hygiène","Souvent oublié"],
+["Essuie-tout","Maison et hygiène","Avec le PQ et les mouchoirs"],["Liquide vaisselle","Maison et hygiène","Basique ménage"],["Éponges","Maison et hygiène","Basique ménage"],
+["Sacs poubelle","Maison et hygiène","Souvent oublié"],["Lessive","Maison et hygiène","Basique ménage"],["Coton-tiges et cotons","Maison et hygiène","Souvent oublié"]
+];
+var KEY="courses-v1",S;
+function load(){try{var r=localStorage.getItem(KEY);if(r){S=JSON.parse(r);return}}catch(e){}
+  S={items:SEED.map(function(s,i){return{id:"s"+i,name:s[0],cat:s[1],done:false}}),hide:false,nid:100}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function $(id){return document.getElementById(id)}
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim()}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+
+function renderList(){
+  var box=$("list");box.textContent="";
+  var total=S.items.length,done=S.items.filter(function(i){return i.done}).length;
+  $("prog-txt").textContent=done+" sur "+total+" dans le panier";
+  var pct=total?Math.round(done/total*100):0;
+  $("prog-pct").textContent=pct+" %";$("bar").style.width=pct+"%";
+  CATS.forEach(function(c){
+    var its=S.items.filter(function(i){return i.cat===c});
+    if(!its.length)return;
+    var left=its.filter(function(i){return !i.done}).length;
+    var vis=its.filter(function(i){return !(S.hide&&i.done)});
+    if(!vis.length)return;
+    vis.sort(function(a,b){return a.done-b.done});
+    var sec=el("div","rayon"),h=el("h2",null,c);
+    h.appendChild(el("span",null,left+" à prendre"));sec.appendChild(h);
+    var ul=el("ul");
+    vis.forEach(function(it){
+      var li=el("li",it.done?"done":""),lb=el("label"),cb=el("input");
+      cb.type="checkbox";cb.checked=it.done;
+      cb.onchange=function(){it.done=cb.checked;save();render()};
+      lb.appendChild(cb);lb.appendChild(el("span",null,it.name));
+      var x=el("button","x","×");x.type="button";x.setAttribute("aria-label","Retirer "+it.name);
+      x.onclick=function(){S.items=S.items.filter(function(o){return o!==it});save();render()};
+      li.appendChild(lb);li.appendChild(x);ul.appendChild(li);
+    });
+    sec.appendChild(ul);box.appendChild(sec);
+  });
+  if(!box.children.length)box.appendChild(el("p","empty",total?"Tout est dans le panier.":"La liste est vide. Ajoutez un article ou ouvrez les oublis possibles."));
+}
+function renderSugs(){
+  var box=$("sugs");box.textContent="";
+  var have=S.items.map(function(i){return norm(i.name)});
+  var open=0;
+  CATS.forEach(function(c){
+    var its=SUGS.filter(function(s){return s[1]===c});
+    if(!its.length)return;
+    box.appendChild(el("h2",null,c));
+    its.forEach(function(s){
+      var n=norm(s[0]),inList=have.some(function(h){return h===n});
+      if(!inList)open++;
+      var row=el("div","sug"+(inList?" in":"")),d=el("div");
+      d.appendChild(el("b",null,s[0]));d.appendChild(el("small",null,s[2]));
+      var b=el("button","btn",inList?"Dans la liste":"Ajouter");b.type="button";b.disabled=inList;
+      b.onclick=function(){S.items.push({id:"u"+(S.nid++),name:s[0],cat:s[1],done:false});save();render()};
+      row.appendChild(d);row.appendChild(b);box.appendChild(row);
+    });
+  });
+  $("nb-oublis").textContent=open;
+}
+function render(){renderList();renderSugs();$("hide").checked=!!S.hide}
+function tab(t){
+  ["liste","oublis"].forEach(function(n){
+    $("p-"+n).hidden=n!==t;$("t-"+n).setAttribute("aria-selected",n===t?"true":"false")});
+  try{history.replaceState(null,"","#"+t)}catch(e){}
+}
+function init(){
+  load();
+  $("date").textContent=new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"});
+  CATS.forEach(function(c){var o=el("option",null,c);o.value=c;$("cat").appendChild(o)});
+  $("form").onsubmit=function(e){e.preventDefault();var v=$("new").value.trim();if(!v)return;
+    S.items.push({id:"u"+(S.nid++),name:v,cat:$("cat").value,done:false});$("new").value="";save();render();$("new").focus()};
+  $("hide").onchange=function(){S.hide=$("hide").checked;save();render()};
+  $("uncheck").onclick=function(){S.items.forEach(function(i){i.done=false});save();render()};
+  $("clean").onclick=function(){S.items=S.items.filter(function(i){return !i.done});save();render()};
+  document.querySelectorAll(".tab").forEach(function(b){b.onclick=function(){tab(b.dataset.tab)}});
+  render();
+  tab(location.hash==="#oublis"?"oublis":"liste");
+}
+init();
+</script>
