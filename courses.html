@@ -66,7 +66,7 @@ li.done label span{text-decoration:line-through;color:var(--done)}
 <div class="wrap">
   <header>
     <h1>Liste de courses</h1>
-    <p class="sub" id="date"></p>
+    <p class="sub"><span id="date"></span> · rayons dans l'ordre du parcours, frais en dernier</p>
   </header>
 
   <nav class="tabs" role="tablist">
@@ -99,37 +99,37 @@ li.done label span{text-decoration:line-through;color:var(--done)}
 </div>
 
 <script>
-var CATS=["Fruits et légumes","Frais","Boulangerie","Épicerie","Boissons","Maison et hygiène"];
+var CATS=["Fruits et légumes","Boulangerie","Conserves et soupes","Pâtes, riz et sauces","Petit-déjeuner et gâteaux","Boissons","Hygiène et papier","Crèmerie et œufs","Végé, traiteur et mer"];
 var SEED=[
-["Graines de sésame","Épicerie"],["Sauce teriyaki","Épicerie"],
-["Petits pois carottes (conserve)","Épicerie"],["Petits pois (conserve)","Épicerie"],["Haricots verts (conserve)","Épicerie"],
-["Asperges (conserve)","Épicerie"],["Maïs (conserve)","Épicerie"],["Thon (conserve)","Épicerie"],["Purée de pois","Épicerie"],
-["Coquillettes","Épicerie"],["Gâteaux du matin","Épicerie"],["Pack d'eau","Boissons"],
-["Crevettes cuites","Frais"],["Faux chorizo","Frais"],["Crème fraîche pasteurisée","Frais"],["Beurre demi-sel pasteurisé","Frais"],
-["Mozzarella en tranches","Frais"],["Mozzarella râpée","Frais"],["Lardons végé","Frais"],["Kiri","Frais"],["Faux poulet végé","Frais"],["Croquetas végé","Frais"],
+["Graines de sésame","Pâtes, riz et sauces"],["Sauce teriyaki","Pâtes, riz et sauces"],
+["Petits pois carottes (conserve)","Conserves et soupes"],["Petits pois (conserve)","Conserves et soupes"],["Haricots verts (conserve)","Conserves et soupes"],
+["Asperges (conserve)","Conserves et soupes"],["Maïs (conserve)","Conserves et soupes"],["Thon (conserve)","Conserves et soupes"],["Purée de pois","Conserves et soupes"],
+["Coquillettes","Pâtes, riz et sauces"],["Gâteaux du matin","Petit-déjeuner et gâteaux"],["Pack d'eau","Boissons"],
+["Crevettes cuites","Végé, traiteur et mer"],["Faux chorizo","Végé, traiteur et mer"],["Crème fraîche pasteurisée","Crèmerie et œufs"],["Beurre demi-sel pasteurisé","Crèmerie et œufs"],
+["Mozzarella en tranches","Crèmerie et œufs"],["Mozzarella râpée","Crèmerie et œufs"],["Lardons végé","Végé, traiteur et mer"],["Kiri","Crèmerie et œufs"],["Faux poulet végé","Végé, traiteur et mer"],["Croquetas végé","Végé, traiteur et mer"],
 ["Petits pains façon bretzel","Boulangerie"],
 ["Oignons jaunes","Fruits et légumes"],["Salade et mâche","Fruits et légumes"],["Avocats","Fruits et légumes"],["Ciboulette","Fruits et légumes"],
 ["Citron jaune","Fruits et légumes"],["Kiwis","Fruits et légumes"],["Raisins sans pépins","Fruits et légumes"],["Tomates cerises","Fruits et légumes"],
 ["Patates douces","Fruits et légumes"],["Butternuts","Fruits et légumes"],["Légumes pour les soupes","Fruits et légumes"],
-["Shampoings Dessange","Maison et hygiène"],["Mouchoirs (boîtes et paquets)","Maison et hygiène"],["PQ Just 1","Maison et hygiène"]
+["Shampoings Dessange","Hygiène et papier"],["Mouchoirs (boîtes et paquets)","Hygiène et papier"],["PQ Just 1","Hygiène et papier"]
 ];
 var SUGS=[
 ["Poireaux","Fruits et légumes","Base de soupe"],["Carottes","Fruits et légumes","Soupes et accompagnement"],["Pommes de terre","Fruits et légumes","Soupes et purées"],
 ["Courgettes","Fruits et légumes","Soupes"],["Ail","Fruits et légumes","Wok, teriyaki, soupes"],["Gingembre","Fruits et légumes","Sauce teriyaki, crevettes"],
 ["Bananes","Fruits et légumes","Fruits de la semaine"],["Pommes","Fruits et légumes","Fruits de la semaine"],
-["Bouillon de légumes (cubes)","Épicerie","Pour les soupes"],["Riz","Épicerie","Avec crevettes et teriyaki"],["Nouilles","Épicerie","Wok teriyaki"],
-["Sauce soja","Épicerie","Complète le teriyaki"],["Huile d'olive","Épicerie","Basique de cuisine"],["Huile de sésame","Épicerie","Avec les graines de sésame"],
-["Sel et poivre","Épicerie","Basique de cuisine"],["Café ou thé","Épicerie","Petit-déjeuner"],["Confiture ou pâte à tartiner","Épicerie","Avec les gâteaux du matin"],
-["Céréales ou flocons d'avoine","Épicerie","Petit-déjeuner"],["Farine et sucre","Épicerie","Basiques de pâtisserie"],
-["Œufs","Frais","Basique, pour les croquetas et omelettes"],["Lait","Frais","Basique"],["Yaourts","Frais","Dessert et petit-déjeuner"],
-["Fromage (emmental, comté)","Frais","Pour gratiner les coquillettes"],["Tofu","Frais","Autre option végé"],
+["Bouillon de légumes (cubes)","Conserves et soupes","Pour les soupes"],["Riz","Pâtes, riz et sauces","Avec crevettes et teriyaki"],["Nouilles","Pâtes, riz et sauces","Wok teriyaki"],
+["Sauce soja","Pâtes, riz et sauces","Complète le teriyaki"],["Huile d'olive","Pâtes, riz et sauces","Basique de cuisine"],["Huile de sésame","Pâtes, riz et sauces","Avec les graines de sésame"],
+["Sel et poivre","Pâtes, riz et sauces","Basique de cuisine"],["Café ou thé","Petit-déjeuner et gâteaux","Petit-déjeuner"],["Confiture ou pâte à tartiner","Petit-déjeuner et gâteaux","Avec les gâteaux du matin"],
+["Céréales ou flocons d'avoine","Petit-déjeuner et gâteaux","Petit-déjeuner"],["Farine et sucre","Pâtes, riz et sauces","Basiques de pâtisserie"],
+["Œufs","Crèmerie et œufs","Basique, pour les croquetas et omelettes"],["Lait","Crèmerie et œufs","Basique"],["Yaourts","Crèmerie et œufs","Dessert et petit-déjeuner"],
+["Fromage (emmental, comté)","Crèmerie et œufs","Pour gratiner les coquillettes"],["Tofu","Végé, traiteur et mer","Autre option végé"],
 ["Pain de mie","Boulangerie","Avec le Kiri et la mozzarella"],["Baguette","Boulangerie","Basique"],
 ["Jus de fruits","Boissons","Avec le pack d'eau"],["Eau gazeuse","Boissons","Avec le pack d'eau"],
-["Après-shampoing","Maison et hygiène","Avec les shampoings"],["Dentifrice","Maison et hygiène","Souvent oublié"],["Savon ou gel douche","Maison et hygiène","Souvent oublié"],
-["Essuie-tout","Maison et hygiène","Avec le PQ et les mouchoirs"],["Liquide vaisselle","Maison et hygiène","Basique ménage"],["Éponges","Maison et hygiène","Basique ménage"],
-["Sacs poubelle","Maison et hygiène","Souvent oublié"],["Lessive","Maison et hygiène","Basique ménage"],["Coton-tiges et cotons","Maison et hygiène","Souvent oublié"]
+["Après-shampoing","Hygiène et papier","Avec les shampoings"],["Dentifrice","Hygiène et papier","Souvent oublié"],["Savon ou gel douche","Hygiène et papier","Souvent oublié"],
+["Essuie-tout","Hygiène et papier","Avec le PQ et les mouchoirs"],["Liquide vaisselle","Hygiène et papier","Basique ménage"],["Éponges","Hygiène et papier","Basique ménage"],
+["Sacs poubelle","Hygiène et papier","Souvent oublié"],["Lessive","Hygiène et papier","Basique ménage"],["Coton-tiges et cotons","Hygiène et papier","Souvent oublié"]
 ];
-var KEY="courses-v1",S;
+var KEY="courses-v2",S;
 function load(){try{var r=localStorage.getItem(KEY);if(r){S=JSON.parse(r);return}}catch(e){}
   S={items:SEED.map(function(s,i){return{id:"s"+i,name:s[0],cat:s[1],done:false}}),hide:false,nid:100}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
